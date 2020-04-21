@@ -46,6 +46,7 @@ require_once ('inc/close.php');
         <?php endforeach; ?>
         </tbody>
     </table>
+    <a href="ajout_categorie.php">Ajouter une catégorie</a>
 
 </body>
 </html>
