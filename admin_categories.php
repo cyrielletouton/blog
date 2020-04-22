@@ -41,7 +41,9 @@ require_once ('inc/close.php');
             <tr>
                 <td><?= $categorie['id'] ?></td>
                 <td><?= $categorie['name'] ?></td>
-                <td></td>
+                <td><a href="modif_categorie.php?id=<?=$categorie['id']?>">Modifier</a>
+                    <a href="suppr_categorie.php?id=<?=$categorie['id']?>">Supprimer</a>
+                </td>
             </tr>
         <?php endforeach; ?>
         </tbody>
