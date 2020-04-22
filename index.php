@@ -5,7 +5,15 @@
 require_once('inc/connect.php') ;
 
 // On écrit la requête SQL
-$sql = 'SELECT * FROM `articles` ORDER BY `created_at` DESC;';
+$sql = 'SELECT `articles`.*,
+        GROUP_CONCAT(`categories`.`name`) as category_name
+        FROM `articles`
+        LEFT JOIN `articles_categories`
+        ON `articles`.`id` = `articles_categories`.`articles_id`
+        LEFT JOIN `categories`
+        ON `articles_categories`.`categories_id` = `categories`.`id`
+        GROUP BY `articles`.`id`
+        ORDER BY `created_at`';
 
 // Requête sans variable donc utilisation de la méthode query
 $query = $db->query($sql) ;
@@ -33,7 +41,17 @@ require_once ('inc/close.php');
     <?php foreach ($articles as $article): ?>
         <article>
             <h2><a href="article.php?id=<?= $article['id']?>"><?= $article['title'] ?></a></h2>
-            <p>Publié le <?= date('d/m/Y à H:i:s', strtotime($article['created_at'])) ?></p>
+            <p>Publié le <?= date('d/m/Y à H:i:s', strtotime($article['created_at'])) ?>
+                dans
+                <?php
+                    // si je recpos "Sports,Actualités"
+                    $categories = explode(',', $article['category_name']);
+                    // Après explode j'ai [ 0 => 'Sports', 1 => 'Actualités']
+                    foreach ($categories as $categorie){
+                        echo '<a href=#>' . $categorie . ' </a>';
+                    }
+                ?>        
+            </p>
             <div><?= substr(strip_tags($article['content']),0, 300).'...' ?></div>
         </article>
     <?php endforeach; ?>
