@@ -13,7 +13,7 @@ $sql = 'SELECT `articles`.*,
         LEFT JOIN `categories`
         ON `articles_categories`.`categories_id` = `categories`.`id`
         GROUP BY `articles`.`id`
-        ORDER BY `created_at`';
+        ORDER BY `created_at` DESC';
 
 // Requête sans variable donc utilisation de la méthode query
 $query = $db->query($sql) ;
