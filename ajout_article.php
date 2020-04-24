@@ -1,4 +1,5 @@
 <?php
+
 // Aller chercher la liste de toutes les catégories par ordre alphabétique
 // Nécessaire AVANT de pouvoir afficher le formulaire
 // On se connecte à la base
@@ -33,7 +34,7 @@ if (isset($_POST) && !empty($_POST)) {
         if (isset($_FILES) && !empty($_FILES)) {
             // On vérifie que tous les fichiers attendus sont envoyés
             // Erreur 4 = pas de fichier (image non obligatoire)
-            if (isset($_FILES['image']) && !empty($_FILES['image']) && $_FILES['image']['error'] !=4) {
+            if (isset($_FILES['image']) && !empty($_FILES['image']) && $_FILES['image']['error'] != 4) {
                 // On récupère les données
                 $image = $_FILES['image'];
 
@@ -74,24 +75,33 @@ if (isset($_POST) && !empty($_POST)) {
                     echo "Le fichier n'a pas été copié !";
                     die;
                 }
+
+                // On crée les différentes versions de l'image
+                // Lors de la création, l'image est copiée et redimensionnée en :
+                // - Miniature carrée de 300px : nom-300x300.ext
+                // - Image réduite à 75% de la taille originale : nom-75.ext
+
+                thumb(300, $nom);
+               
             }
         }
 
-            // On est déjà connectés
-            // On écrit la requête SQL
-            $sql = 'INSERT INTO `articles` (`title`, `content`, `featured_image`, `users_id`) VALUES (:titre, :contenu, :image, :userid);';
+        // On est déjà connectés
+        // On écrit la requête SQL
+        $sql = 'INSERT INTO `articles` (`title`, `content`, `featured_image`, `users_id`) VALUES (:titre, :contenu, :image, :userid);';
 
-            // On prépare la requête
-            $query = $db->prepare($sql);
+        // On prépare la requête
+        $query = $db->prepare($sql);
 
-            // On injecte les valeurs dans la requête
-            $query->bindValue(':titre', $titre, PDO::PARAM_STR);
-            $query->bindValue(':contenu', $contenu, PDO::PARAM_STR);
-            $query->bindValue(':userid', 1, PDO::PARAM_INT);
-            $query->bindValue(':image', $nom, PDO::PARAM_STR);
+        // On injecte les valeurs dans la requête
+        $query->bindValue(':titre', $titre, PDO::PARAM_STR);
+        $query->bindValue(':contenu', $contenu, PDO::PARAM_STR);
+        $query->bindValue(':userid', 1, PDO::PARAM_INT);
+        $query->bindValue(':image', $nom, PDO::PARAM_STR);
 
-            // On exécute la requête
-            $query->execute();
+        // On exécute la requête
+        $query->execute();
+
 
         // On récupère l'id de l'article nouvellement créé
         $idArticle = $db->lastInsertId();
