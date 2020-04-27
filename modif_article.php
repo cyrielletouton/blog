@@ -141,23 +141,22 @@ if (isset($_POST) && !empty($_POST)) {
                 thumb(300, $nom);
                 resizeImage($nom, 75);
 
-                if ($article['featured_image'] != null){
-                // On gère la suppression des anciennes images
-                // On récupère la 1ère partie du nom de fichier de l'ancienne image (avant l'extension)
-                $debutNom = pathinfo($article['featured_image'], PATHINFO_FILENAME);
+                if ($article['featured_image'] != null) {
+                    // On gère la suppression des anciennes images
+                    // On récupère la 1ère partie du nom de fichier de l'ancienne image (avant l'extension)
+                    $debutNom = pathinfo($article['featured_image'], PATHINFO_FILENAME);
 
-                // On récupère la liste des fichiers dans le dossier uploads
-                $fichiers = scandir(__DIR__ . '/uploads/');
+                    // On récupère la liste des fichiers dans le dossier uploads
+                    $fichiers = scandir(__DIR__ . '/uploads/');
 
-                // On boucle sur les fichiers
-                foreach($fichiers as $fichier){
-                    // Si le nom du fichier commence par $debutNom alors on le supprime
-                    if (strpos($fichier, $debutNom) === 0){
-                        // On supprime le fichier
-                        unlink(__DIR__ . '/uploads/' . $fichier);
+                    // On boucle sur les fichiers
+                    foreach ($fichiers as $fichier) {
+                        // Si le nom du fichier commence par $debutNom alors on le supprime
+                        if (strpos($fichier, $debutNom) === 0) {
+                            // On supprime le fichier
+                            unlink(__DIR__ . '/uploads/' . $fichier);
+                        }
                     }
-                }
-
                 } // Fin if image !=null
 
             } // Fin isset files image
@@ -234,14 +233,11 @@ if (isset($_POST) && !empty($_POST)) {
 
         // On redirige vers une autre page
         header('Location: admin_articles.php');
-
-
     } // Fin isset GET id
 
 
     // On se déconnecte de la base
     require_once('inc/close.php');
-
 } // Fin isset POST
 
 
