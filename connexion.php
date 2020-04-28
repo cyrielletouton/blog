@@ -1,4 +1,7 @@
 <?php
+// On active l'accès à la session
+session_start();
+
 // Formulaire de connexion
 // Doit afficher en haut de page "Vous êtes connecté(e)" si le mail et le mot de passe sont bons
 // Doit afficher en haut de page "Email et/ou mot de passe invalide" si le mail et le mot de passe ne sont pas bons
@@ -38,7 +41,14 @@ if(isset($_POST) && !empty($_POST)){
             // On vérifie que le mot de passe saisi correpond à celui en base
             // password_verify($passEnClairSaisi, $passBaseDeDonnees)
             if(password_verify($pass, $user['password'])){
-                echo "Vous êtes connecté(e)";
+                // On créé la session "user"
+                // On ne stocke JAMAIS de données dont on ne maîtrise pas le contenu
+                $_SESSION['user'] = [
+                    'id' => $user['id'],
+                    'email' => $user['email'],
+                    'name' => $user['name']
+                ] ;
+                header('Location: index.php');
             } else {
                 echo 'Email et/ou mot de passe invalide';
             }

@@ -33,6 +33,7 @@ require_once ('inc/close.php');
     <table>
         <thead>
             <th>ID</th>
+            <th>Nom</th>
             <th>Email</th>
             <th>Actions</th>
         </thead>
@@ -40,6 +41,7 @@ require_once ('inc/close.php');
         <?php foreach ($users as $user): ?>
             <tr>
                 <td><?= $user['id'] ?></td>
+                <td><?= $user['name'] ?></td>
                 <td><?= $user['email'] ?></td>
                 <td> <a href="user.php?id=<?= $user['id']?>">Afficher</a></td>
             </tr>

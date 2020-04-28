@@ -7,10 +7,11 @@
 if (isset($_POST) && !empty($_POST)){
     // On vérifie si tous les champs du formulaire sont remplis
     require_once('inc/lib.php');    // Correspond a : if(isset($_POST['nom']) && !empty($_POST['nom'])){
-    if(verifForm($_POST, ['mail','pass'])){    
+    if(verifForm($_POST, ['name','mail','pass'])){    
         // On récupère la valeur saisie du champ
         // Pour éviter les failles XSS (Cross Site Scripting)
         // Méthode 1 : Enlever les balises html
+        $name = strip_tags($_POST['name']);
         $mail = strip_tags($_POST['mail']);
 
         // On récupère le mot de passe et on le chiffre
@@ -20,7 +21,7 @@ if (isset($_POST) && !empty($_POST)){
         require_once('inc/connect.php');
 
         // On écrit la requête SQL
-        $sql = 'INSERT INTO `users`(`email`, `password`) VALUES (:email, :password);';
+        $sql = 'INSERT INTO `users`(`email`, `password`, `name`) VALUES (:email, :password, :name);';
 
         // On prépare la requête
         $query = $db->prepare($sql);
@@ -28,6 +29,7 @@ if (isset($_POST) && !empty($_POST)){
         // On injecte les valeurs dans la requête
         $query->bindValue(':email', $mail, PDO::PARAM_STR);
         $query->bindValue(':password', $pass, PDO::PARAM_STR) ;
+        $query->bindValue(':name', $name, PDO::PARAM_STR) ;
 
         // On exécute la requête
         $query->execute();
@@ -39,7 +41,7 @@ if (isset($_POST) && !empty($_POST)){
         header('Location: admin_users.php');
         }
     } else {
-        echo "Attention formulaire incorrect";
+        // echo "Attention formulaire incorrect";
     }
 
 ?>
@@ -54,6 +56,10 @@ if (isset($_POST) && !empty($_POST)){
 <body>
     <h1>S'inscrire :</h1>
     <form method="post">
+        <div>
+            <label for="name">Nom :</label>
+            <input type="text" id="name" name="name">
+        </div>
         <div>
             <label for="mail">Email :</label>
             <input type="email" id="mail" name="mail">

@@ -1,4 +1,8 @@
 <?php
+
+session_start();
+
+
 // Cette page récupère la liste de tous les catégories de la bdd
 
 // On se connecte à la base
@@ -36,6 +40,8 @@ require_once ('inc/close.php');
     <title>Liste des articles</title>
 </head>
 <body>
+
+    <?php include_once('inc/header.php') ?>
 
     <h1>Liste des articles</h1>
     <?php foreach ($articles as $article): ?>
