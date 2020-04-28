@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 // Aller chercher la liste de toutes les catégories par ordre alphabétique
 // Nécessaire AVANT de pouvoir afficher le formulaire
 // On se connecte à la base
@@ -49,7 +51,8 @@ if (isset($_POST) && !empty($_POST)) {
 
                 // On vérifie si le type du fichier est absent de la liste
                 if (!in_array($image['type'], $types)) {
-                    echo "Le type de fichier doit être une image jpg ou png";
+                    $_SESSION['error'] = 'Le fichier doit être une image png ou jpg';
+                    header('Location: ajout_article.php');
                     die;
                 }
 
@@ -84,7 +87,6 @@ if (isset($_POST) && !empty($_POST)) {
                 // Appel de la fonction thumb dans lib.php
                 thumb(300, $nom);
                 resizeImage($nom, 75);
-               
             }
         }
 
@@ -127,16 +129,16 @@ if (isset($_POST) && !empty($_POST)) {
             $query->execute();
         }
 
+        $_SESSION['message'] = 'Article ajouté avec succès sous le numéro ' . $idArticle;
         // On redirige vers une autre page (liste des catégories par exemple)
-        header('Location: index.php');
-
-        // On se déconnecte de la base
-        require_once('inc/close.php');
+        header('Location: admin_articles.php');
     } else {
         echo "Le formulaire doit être rempli complètement";
     }
 }
 
+// On se déconnecte de la base
+require_once('inc/close.php');
 
 ?>
 
@@ -151,6 +153,15 @@ if (isset($_POST) && !empty($_POST)) {
 
 <body>
     <h1>Ajouter un article</h1>
+
+    <?php
+    // Y a-t-il un message d'erreur ?
+    if (isset($_SESSION['error']) && !empty($_SESSION['error'])) {
+        echo  $_SESSION['error'];
+        unset($_SESSION['error']);
+    }
+    ?>
+
     <form method="post" enctype="multipart/form-data">
         <div>
             <label for="titre">Titre de l'article : </label>

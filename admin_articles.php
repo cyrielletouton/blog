@@ -21,13 +21,18 @@ require_once 'inc/close.php';
     <title>Liste des Articles</title>
 </head>
 <body>
-    <?php if(verifForm($_SESSION, ['message'])): ?>
-        <div style="color:green; font-weight: bold"><?= $_SESSION['message'] ?></div>
-    <?php 
-        $_SESSION['message'] = '';
-        endif;
-    ?>
     <h1>Liste des articles</h1>
+
+    <?php
+    // Y a-t-il un message ?
+    if (isset($_SESSION['message']) && !empty($_SESSION['message'])) {
+        ?>
+        <div style="color:green; font-weight:bold"><?= $_SESSION['message'] ?></div>
+        <?php
+        unset($_SESSION['message']);
+    }
+    ?>
+
     <table>
         <thead>
             <th>ID</th>

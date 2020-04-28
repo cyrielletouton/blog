@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 // Ce fichier sert à supprimer 1 article
 // - Vérifier que l'article existe
 // - Supprimer les images (physiques)
@@ -82,9 +84,11 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     $query->execute();
     // Fin suppression article
 
-
     // On déconnecte
     require_once('inc/close.php');
+
+    // On écrit un message qui va confirmer la suppression 
+    $_SESSION['message'] = 'Article supprimé avec succès sous le numéro ' . $id;
 
     // On redirige ou on affiche un message
     header('Location: admin_articles.php');

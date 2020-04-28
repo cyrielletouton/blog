@@ -1,4 +1,7 @@
 <?php
+
+session_start();
+
 // Cette page affiche un article
 
 // On vérifie si on a un id dans l'URL et qu'il n'est pas vide
@@ -58,6 +61,8 @@ if(isset($_GET['id']) && !empty($_GET['id'])){
     <title><?= $article['title']?></title>
 </head>
 <body>
+
+    <?php include_once('inc/header.php'); ?>
 
     <article>
         <h1><?= $article['title'] ?></h1>

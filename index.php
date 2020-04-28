@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+require_once('inc/retour_session.php');
 
 
 // Cette page récupère la liste de tous les catégories de la bdd

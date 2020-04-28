@@ -7,5 +7,7 @@
 session_start();
 unset($_SESSION['user']);
 
+// On efface l'éventuel cookie 'remember'
+setcookie('remember', '', 1);
 
 header('Location: ' .$_SERVER['HTTP_REFERER']);
