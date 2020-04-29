@@ -97,6 +97,14 @@ if (isset($_POST) && !empty($_POST)) {
 <body>
 
     <h1>Connexion</h1>
+
+    <?php
+    if (isset($_SESSION['message']) && !empty($_SESSION['message'])) {
+        echo $_SESSION['message'];
+        unset($_SESSION['message']);
+    }
+    ?>
+
     <form method="post">
         <div>
             <label for="mail">Email : </label>
@@ -111,6 +119,7 @@ if (isset($_POST) && !empty($_POST)) {
             <label for="remember"> Rester connecté(e) </label>
         </div>
         <button>Me connecter</button>
+        <a href="oubli_pass.php">Mot de passe oublié? </a>
     </form>
 
 </body>
