@@ -1,0 +1,5 @@
+AuthName "Entrez le mot de passe"
+AuthType Basic
+# Attention le fichier htpasswd ne doit pas être accessible depuis internet
+AuthUserFile C:\xampp\htdocs\blog\protege\.htpasswd
+Require valid-user

@@ -33,7 +33,8 @@ if(isset($_COOKIE['remember']) && !empty($_COOKIE['remember'])){
         $_SESSION['user'] = [
             'id' => $user['id'],
             'email' => $user['email'],
-            'name' => $user['name']
+            'name' => $user['name'],
+            'roles' => $user['roles']
         ];
     }
 }

@@ -1,0 +1,4 @@
+# On définit nos documents d'erreur
+ErrorDocument 404 /blog/errors/404.php
+ErrorDocument 403 /blog/errors/403.php
+

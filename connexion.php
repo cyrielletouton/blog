@@ -46,7 +46,8 @@ if (isset($_POST) && !empty($_POST)) {
                 $_SESSION['user'] = [
                     'id' => $user['id'],
                     'email' => $user['email'],
-                    'name' => $user['name']
+                    'name' => $user['name'],
+                    'roles' => $user['roles']
                 ];
 
                 // On vérifie si la case est cochée
@@ -70,13 +71,11 @@ if (isset($_POST) && !empty($_POST)) {
                     // Donc sans les bind, pas besoin de prepare et execute, juste query
                     $query = $db ->query($sql) ;
 
-
                     header('Location: index.php');
-                } else {
-                    echo 'Email et/ou mot de passe invalide';
-                }
+                } 
+                header('Location: index.php');
             } else {
-                echo "Veuillez remplir tous les champs";
+                echo 'Email et/ou mot de passe invalide';
             }
         } // Fin de si on a un user
 
