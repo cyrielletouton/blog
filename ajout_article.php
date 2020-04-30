@@ -86,6 +86,7 @@ if (isset($_POST) && !empty($_POST)) {
 
                 // Appel de la fonction thumb dans lib.php
                 thumb(300, $nom);
+                thumb(150, $nom);
                 resizeImage($nom, 75);
             }
         }

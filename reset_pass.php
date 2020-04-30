@@ -1,3 +1,11 @@
+Mettre en place la procédure de récupération de mot de passe
+- Page connexion : Lien "mot de passe oublié"
+- Nouvelle page "oubli_pass.php" qui demande d'entrer l'adresse mail et qui enverra un mail avec un lien (si l'adresse existe dans la base)
+    - Le lien http://localhost/reset_pass.php?token=abcdefg
+    - Ce token est stocké dans la base de données, table users, colonne reset_token (varchar 255 peut être null)
+- Nouvelle page reset_pass.php avec 2 champs mot de passe qui valide le changement, envoie un mail de confirmation et redirige vers connexion.php
+    - On affiche la page si le token existe dans la base de données
+
 <?php
 
 session_start();
@@ -87,7 +95,7 @@ if (isset($_GET['token']) && !empty($_GET['token'])) {
                     <a href="http://localhost/blog">Venez, c\'est par ici</a>
                 ';
                 $mail->send();
-                
+
             } catch(Exception $e){
                 echo $e->errorMessage();
             }

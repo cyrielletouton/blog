@@ -138,6 +138,7 @@ if (isset($_POST) && !empty($_POST)) {
                 // - Image réduite à 75% de la taille originale : nom-75.ext
 
                 // Appel de la fonction thumb dans lib.php
+                thumb(150, $nom);
                 thumb(300, $nom);
                 resizeImage($nom, 75);
 

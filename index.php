@@ -47,7 +47,7 @@ require_once('inc/close.php');
     <?php include_once('inc/header.php') ?>
 
     <h1>Liste des articles</h1>
-    
+
     <?php
     if (isset($_SESSION['error']) && !empty($_SESSION['error'])) {
         echo $_SESSION['error'];
@@ -69,6 +69,24 @@ require_once('inc/close.php');
                 }
                 ?>
             </p>
+            <?php
+            // On vérifie si l'article a une image
+            if($article['featured_image'] != null):
+                // On a une image, on la traite et on l'affiche
+                // On sépare le nom et l'extension
+                $nom = pathinfo($article['featured_image'], PATHINFO_FILENAME);
+                $extension = pathinfo($article['featured_image'], PATHINFO_EXTENSION);
+                
+                // On crée le nom de l'image à afficher
+                $image =  $nom .'-150x150.'.$extension;
+
+                // On affiche l'image
+                ?>
+                <img src="uploads/<?= $image ?>" alt="<?= $article['title']?>">
+
+                <?php
+            endif;
+            ?>
             <div><?= substr(strip_tags($article['content']), 0, 300) . '...' ?></div>
         </article>
     <?php endforeach; ?>
