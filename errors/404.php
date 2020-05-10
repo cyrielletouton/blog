@@ -8,6 +8,6 @@
 <body>
     <h1>Je n'ai pas trouvé ce que vous cherchez</h1>
     <p>La ressource recherchée est introuvable pour le moment, veuillez réessayer ultérieurement, ou pas.</p>
-    <a href="/blog">Retour à l'accueil</a>
+    <a href="/blog-ct">Retour à l'accueil</a>
 </body>
 </html>

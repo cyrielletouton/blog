@@ -58,7 +58,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
 
     // Supprimer l'association aux catégories
     // On écrit la requête
-    $sql = 'DELETE FROM `articles_categories` WHERE `articles_id` = :id;';
+    $sql = 'DELETE FROM `articles_localisation` WHERE `articles_id` = :id;';
 
     // On prépare la requête
     $query = $db->prepare($sql);

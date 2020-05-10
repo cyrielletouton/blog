@@ -77,7 +77,7 @@ if (isset($_POST['mail']) && !empty($_POST['mail'])) {
         // On essaie d'envoyer un mail
         try {
             // On définit l'expéditeur
-            $mail->setFrom('notre@adresse.fr', 'Nom du site');
+            $mail->setFrom('souvenirs@voyages.fr', 'Souvenirs de voyages');
 
             // On définit le destinaire
             $mail->addAddress($user['email'], $user['name']);
@@ -92,7 +92,7 @@ if (isset($_POST['mail']) && !empty($_POST['mail'])) {
             $mail->Body = '
                     <h1>Rénitialiser votre mot de passe</h1>
                     <p>Une réniatialisation de mot de passe a été demandée pour votre compte ' .$user['email'].'. Si vous avez effectué cette demande, veuillez cliquer sur le lien ci-dessous : </p>
-                    <a href="http://localhost/blog/reset_pass.php?token='. $token .'"> http://localhost/blog/reset_pass.php?token='. $token.' </a>
+                    <a href="http://localhost/blog-ct/reset_pass.php?token='. $token .'"> http://localhost/blog-ct/reset_pass.php?token='. $token.' </a>
                     ';
 
             // On peut définir un contenu de texte

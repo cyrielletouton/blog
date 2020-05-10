@@ -45,6 +45,7 @@ require_once ('inc/close.php');
 <body>
 
     <h1>Information de l'utilisateur <?= $user['id'] ?></h1>
+    <p>Nom : <?= $user['name']?></p>
     <p>Email : <?= $user['email']?></p>
     <p>Mot de passe : <?= $user['password'] ?></p>  
     <p><a href="<?= $_SERVER['HTTP_REFERER'] ?>">Retour</a></p>    

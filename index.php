@@ -11,12 +11,12 @@ require_once('inc/connect.php');
 
 // On écrit la requête SQL
 $sql = 'SELECT `articles`.*,
-        GROUP_CONCAT(`categories`.`name`) as category_name
+        GROUP_CONCAT(`localisation`.`name`) as localisation_name
         FROM `articles`
-        LEFT JOIN `articles_categories`
-        ON `articles`.`id` = `articles_categories`.`articles_id`
-        LEFT JOIN `categories`
-        ON `articles_categories`.`categories_id` = `categories`.`id`
+        LEFT JOIN `articles_localisation`
+        ON `articles`.`id` = `articles_localisation`.`articles_id`
+        LEFT JOIN `localisation`
+        ON `articles_localisation`.`localisation_id` = `localisation`.`id`
         GROUP BY `articles`.`id`
         ORDER BY `created_at` DESC';
 
@@ -39,14 +39,14 @@ require_once('inc/close.php');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste des articles</title>
+    <title>Souvenirs de voyages</title>
 </head>
 
 <body>
 
     <?php include_once('inc/header.php') ?>
 
-    <h1>Liste des articles</h1>
+    <h1>Souvenirs de voyages</h1>
 
     <?php
     if (isset($_SESSION['error']) && !empty($_SESSION['error'])) {
@@ -61,11 +61,10 @@ require_once('inc/close.php');
             <p>Publié le <?= date('d/m/Y à H:i:s', strtotime($article['created_at'])) ?>
                 dans
                 <?php
-                // si je recpos "Sports,Actualités"
-                $categories = explode(',', $article['category_name']);
-                // Après explode j'ai [ 0 => 'Sports', 1 => 'Actualités']
-                foreach ($categories as $categorie) {
-                    echo '<a href=#>' . $categorie . ' </a>';
+                // A ENLEVER PLUS TARD CAR CHOISIR QUE FRANCE OU QUE EUROPE !!!!
+                $localisations = explode(',', $article['localisation_name']);
+                foreach ($localisations as $localisation) {
+                    echo '<a href=#>' . $localisation . ' </a>';
                 }
                 ?>
             </p>
@@ -96,9 +95,4 @@ require_once('inc/close.php');
 </html>
 
 <?php
-// substr(strip_tags($article['content']), O, 300)
-// On enlève les balises HTML
-// $contenuSansHtml = strip_tags($article['content']);
 
-// On raccourcit à 300 caractères
-// $contenuRaccourci = substr($contenuSansHtml, 0, 300);

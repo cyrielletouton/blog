@@ -16,12 +16,12 @@ if(isset($_GET['id']) && !empty($_GET['id'])){
 
     // On écrit la requête SQL
     $sql = 'SELECT `articles`.*,
-        GROUP_CONCAT(`categories`.`name`) as category_name
+        GROUP_CONCAT(`localisation`.`name`) as localisation_name
         FROM `articles`
-        LEFT JOIN `articles_categories`
-        ON `articles`.`id` = `articles_categories`.`articles_id`
-        LEFT JOIN `categories`
-        ON `articles_categories`.`categories_id` = `categories`.`id`
+        LEFT JOIN `articles_localisation`
+        ON `articles`.`id` = `articles_localisation`.`articles_id`
+        LEFT JOIN `localisation`
+        ON `articles_localisation`.`localisation_id` = `localisation`.`id`
         WHERE `articles`.`id`= :id
         GROUP BY `articles`.`id`';
 
@@ -69,11 +69,10 @@ if(isset($_GET['id']) && !empty($_GET['id'])){
         <p>Publié le <?= date('d/m/Y à H:i:s', strtotime($article['created_at'])) ?>
         dans
                 <?php
-                    // si je recpos "Sports,Actualités"
-                    $categories = explode(',', $article['category_name']);
-                    // Après explode j'ai [ 0 => 'Sports', 1 => 'Actualités']
-                    foreach ($categories as $categorie){
-                        echo '<a href=#>' . $categorie . ' </a>';
+                    // ENLEVER APRES CAR CHOISIR QUE FRANCE OU QUE EUROPE !!!!
+                    $localisations = explode(',', $article['localisation_name']);
+                    foreach ($localisations as $localisation){
+                        echo '<a href=#>' . $localisation . ' </a>';
                     }
                 ?>    
         </p>

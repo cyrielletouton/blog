@@ -8,6 +8,6 @@
 <body>
     <h1>Vous n'avez pas accès à cette page</h1>
     <p>La ressource est protégée, vous n'avez pas les permissions suffisantes pour y accéder.</p>
-    <a href="/blog">Retour à l'accueil</a>
+    <a href="/blog-ct">Retour à l'accueil</a>
 </body>
 </html>

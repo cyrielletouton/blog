@@ -8,6 +8,6 @@
 <body>
     <h1>Erreur serveur</h1>
     <p>Débrouillez-vous pour trouver la cause.</p>
-    <a href="/blog">Retour à l'accueil</a>
+    <a href="/blog-ct">Retour à l'accueil</a>
 </body>
 </html>

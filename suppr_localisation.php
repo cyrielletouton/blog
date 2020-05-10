@@ -1,7 +1,7 @@
 <?php
-// Ce fichier sert à supprimer 1 catégorie
+// Ce fichier sert à supprimer 1 localisation
 
-// On récupère dans l'url l'id de la catégorie à supprimer par l'intermédiaire de $_GET
+// On récupère dans l'url l'id de la localisation à supprimer par l'intermédiaire de $_GET
 if(isset($_GET['id']) && !empty($_GET['id'])){
     // On récupère l'id envoyé et on nettoie
     $id = strip_tags($_GET['id']);
@@ -10,7 +10,7 @@ if(isset($_GET['id']) && !empty($_GET['id'])){
     require_once('inc/connect.php');
 
     // On écrit la requête
-    $sql = 'DELETE FROM `categories` WHERE `id` = :id;';
+    $sql = 'DELETE FROM `localisation` WHERE `id` = :id;';
 
     // On prépare la requête
     $query = $db->prepare($sql);
@@ -25,7 +25,7 @@ if(isset($_GET['id']) && !empty($_GET['id'])){
     require_once('inc/close.php');
 
     // On redirige ou on affiche un message
-    header('Location: admin_categories.php');
+    header('Location: admin_localisation.php');
 
 } else {
     // Pas d'id

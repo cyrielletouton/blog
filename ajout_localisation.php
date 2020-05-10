@@ -18,7 +18,7 @@ if (isset($_POST) && !empty($_POST)){
         require_once('inc/connect.php');
 
         // On écrit la requête SQL
-        $sql = 'INSERT INTO `categories`(`name`) VALUES (:nom);';
+        $sql = 'INSERT INTO `localisation`(`name`) VALUES (:nom);';
 
         // On prépare la requête
         $query = $db->prepare($sql);
@@ -33,7 +33,7 @@ if (isset($_POST) && !empty($_POST)){
         require_once('inc/close.php');
 
         // On redirige vers la liste des catégories
-        header('Location: admin_categories.php');
+        header('Location: admin_localisation.php');
         }
     } else {
         echo "Attention il faut entrer un nom";
@@ -46,16 +46,16 @@ if (isset($_POST) && !empty($_POST)){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter une catégorie</title>
+    <title>Ajouter une localisation</title>
 </head>
 <body>
-    <h1>Ajouter une catégorie</h1>
+    <h1>Ajouter une localisation</h1>
     <form method="post">
         <div>
-            <label for="nom">Nom de la catégorie :</label>
+            <label for="nom">Nom de la localisation :</label>
             <input type="text" id="nom" name="nom">
         </div>
-        <button>Ajouter la catégorie</button>
+        <button>Ajouter la localisation</button>
     </form>
     
 </body>

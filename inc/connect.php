@@ -4,7 +4,7 @@ try{
     // define('DB_USER', 'root')
 
     // Connexion à la base de données
-    $db = new PDO('mysql:host=localhost;dbname=blog', 'root', '');
+    $db = new PDO('mysql:host=localhost;dbname=blog-ct', 'root', '');
 
     // On force les échanges en UTF8
     $db->exec('SET NAMES "UTF8"');

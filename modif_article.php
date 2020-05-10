@@ -1,25 +1,17 @@
 <?php
-// Sur la page de modification
-// - Le contenu de l'article doit apparaitre dans les champs
-// - Les catégories de l'article doivent être cochées
-// Dans le traitement
-// - On doit enregistrer toutes les informations de l'article (titre, contenu, image, catégories)
-// - Si on a une image, l'ancienne doit être supprimée du disque (dans toutes ses versions), la nouvelle doit être sauvegardée dans toutes les tailles
-
-
-// Aller chercher la liste de toutes les catégories par ordre alphabétique
+// Aller chercher la liste de toutes les localisations par ordre alphabétique
 // Nécessaire AVANT de pouvoir afficher le formulaire
 // On se connecte à la base
 require_once('inc/connect.php');
 
 // On écrit la requête SQL
-$sql = 'SELECT * FROM `categories` ORDER BY `name` ASC;';
+$sql = 'SELECT * FROM `localisation` ORDER BY `name` ASC;';
 
 // Pas de variables, donc utilisation de la méthode query
 $query = $db->query($sql);
 
 // on récupère les données
-$categories = $query->fetchAll(PDO::FETCH_ASSOC);
+$localisations = $query->fetchAll(PDO::FETCH_ASSOC);
 
 // On récupère le contenu de l'article passé dans l'URL
 // On vérifie si un id est passé dans l'URL
@@ -49,9 +41,9 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
         header('Location: admin_articles.php');
     }
 
-    // L'article existe, on va chercher les catégories dans lesquelles il se trouve
+    // L'article existe, on va chercher la localisation dans laquelle il se trouve
     // On écrit la requête
-    $sql = 'SELECT * FROM `articles_categories` WHERE `articles_id`= :id;';
+    $sql = 'SELECT * FROM `articles_localisation` WHERE `articles_id`= :id;';
 
     // On prépare la requête
     $query = $db->prepare($sql);
@@ -62,22 +54,22 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     // on exécute
     $query->execute();
 
-    $categoriesArticle = $query->fetchAll(PDO::FETCH_ASSOC);
+    $localisationsArticle = $query->fetchAll(PDO::FETCH_ASSOC);
 } else {
     // Pas d'id
     header('Location: admin_articles.php');
 }
 
 
-// Traiter le formulaire -> Modifier l'article dans la base et lui attribuer les bonnes catégories
+// Traiter le formulaire -> Modifier l'article dans la base et lui attribuer la bonne localisation
 // 1ère partie du traitement, mettre à jour l'article
-// 2ème partie du traitement, lui affecter la/les catégorie(s)
+// 2ème partie du traitement, lui affecter la localisation
 // On vérifie que le formulaire a été envoyé
 if (isset($_POST) && !empty($_POST)) {
     // On a un formulaire envoyé
     // On vérifie que tout est bien rempli
     require_once('inc/lib.php');
-    if (verifForm($_POST, ['titre', 'contenu', 'categories'])) {
+    if (verifForm($_POST, ['titre', 'contenu', 'localisations'])) {
         // Le formulaire est complet, on peut modifier l'article
         // On récupère les valeurs et on nettoie
         $titre = strip_tags($_POST['titre']);
@@ -198,7 +190,7 @@ if (isset($_POST) && !empty($_POST)) {
 
         // On efface toutes les lignes correspondantes à l'article dans la table articles_categories
         // on écrit la requête
-        $sql = 'DELETE FROM `articles_categories` WHERE `articles_id` = :id;';
+        $sql = 'DELETE FROM `articles_localisation` WHERE `articles_id` = :id;';
 
         // On prépare la requête
         $query = $db->prepare($sql);
@@ -212,20 +204,20 @@ if (isset($_POST) && !empty($_POST)) {
 
 
 
-        // On récupère dans le $_POST les catégories cochées
-        $categories = $_POST['categories'];
+        // On récupère dans le $_POST les localisations cochées
+        $localisations = $_POST['localisations'];
 
-        // On ajoute les catégories
-        foreach ($categories as $categorie) {
+        // On ajoute les localisations
+        foreach ($localisations as $localisation) {
             // On écrit la requête
-            $sql = 'INSERT INTO `articles_categories`(`articles_id`, `categories_id`) VALUES (:idArticle, :idCategorie);';
+            $sql = 'INSERT INTO `articles_localisation`(`articles_id`, `localisation_id`) VALUES (:idArticle, :idLocalisation);';
 
             // On prépare la requête
             $query = $db->prepare($sql);
 
             // On injecte les valeurs
             $query->bindValue(':idArticle', $id, PDO::PARAM_INT);
-            $query->bindValue(':idCategorie', strip_tags($categorie), PDO::PARAM_INT);
+            $query->bindValue(':idLocalisation', strip_tags($localisation), PDO::PARAM_INT);
 
             // On exécute la requête
             $query->execute();
@@ -272,23 +264,20 @@ if (isset($_POST) && !empty($_POST)) {
             <label for="image">Image : </label>
             <input type="file" name="image" id="image">
         </div>
-        <h2>Catégories</h2>
+        <h2>Localisation</h2>
         <?php
-        foreach ($categories as $categorie) :
-            // On va vérifier si la catégorie qu'on affiche doit être cochée
+        foreach ($localisations as $localisation) :
+            // On va vérifier si la localisation qu'on affiche doit être cochée
             $checked = '';
-            foreach ($categoriesArticle as $cat) {
-                if ($cat['categories_id'] == $categorie['id']) {
+            foreach ($localisationsArticle as $loc) {
+                if ($loc['localisation_id'] == $localisation['id']) {
                     $checked = 'checked';
                 }
-
-                // Condition ternaire
-                // $checked = ($cat['categories_id'] == $categorie['id']) ? 'checked' : '';
             }
         ?>
             <div>
-                <input type="checkbox" name="categories[]" id="cat_<?= $categorie['id'] ?>" value="<?= $categorie['id'] ?>" <?= $checked ?>>
-                <label for="cat_<?= $categorie['id'] ?>"> <?= $categorie['name'] ?> </label>
+                <input type="checkbox" name="localisations[]" id="loc_<?= $localisation['id'] ?>" value="<?= $localisation['id'] ?>" <?= $checked ?>>
+                <label for="loc_<?= $localisation['id'] ?>"> <?= $localisation['name'] ?> </label>
             </div>
         <?php endforeach; ?>
         <button>Modifier l'article</button>

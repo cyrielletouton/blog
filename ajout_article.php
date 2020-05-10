@@ -2,31 +2,31 @@
 
 session_start();
 
-// Aller chercher la liste de toutes les catégories par ordre alphabétique
+// Aller chercher la liste de toutes les localisations par ordre alphabétique
 // Nécessaire AVANT de pouvoir afficher le formulaire
 // On se connecte à la base
 require_once('inc/connect.php');
 
 // On écrit la requête SQL
-$sql = 'SELECT * FROM `categories` ORDER BY `name` ASC;';
+$sql = 'SELECT * FROM `localisation` ORDER BY `name` ASC;';
 
 // Pas de variables, donc utilisation de la méthode query
 $query = $db->query($sql);
 
 // on récupère les données
-$categories = $query->fetchAll(PDO::FETCH_ASSOC);
+$localisations = $query->fetchAll(PDO::FETCH_ASSOC);
 
 
-// Traiter le formulaire -> Ajouter l'article dans la base et lui attribuer les bonnes catégories
+// Traiter le formulaire -> Ajouter l'article dans la base et lui attribuer la bonne localisation
 // 1ère partie du traitement, créer l'article
-// 2ème partie du traitement, lui affecter la/les catégorie(s)
+// 2ème partie du traitement, lui affecter la localisation
 
 // On vérifie que le formulaire a été envoyé
 if (isset($_POST) && !empty($_POST)) {
     // On a un formulaire envoyé
     // On vérifie que tout est bien rempli
     require_once('inc/lib.php');
-    if (verifForm($_POST, ['titre', 'contenu', 'categories'])) {
+    if (verifForm($_POST, ['titre', 'contenu', 'localisation'])) {
         // Le formulaire est complet, on peut créer l'article
         // On récupère les valeurs et on nettoie
         $titre = strip_tags($_POST['titre']);
@@ -93,16 +93,16 @@ if (isset($_POST) && !empty($_POST)) {
 
         // On est déjà connectés
         // On écrit la requête SQL
-        $sql = 'INSERT INTO `articles` (`title`, `content`, `featured_image`, `users_id`) VALUES (:titre, :contenu, :image, :userid);';
+        $sql = 'INSERT INTO `articles` (`title`, `featured_image`, `content`, `users_id`) VALUES (:titre, :image, :contenu, :userid);';
 
         // On prépare la requête
         $query = $db->prepare($sql);
 
         // On injecte les valeurs dans la requête
         $query->bindValue(':titre', $titre, PDO::PARAM_STR);
+        $query->bindValue(':image', $nom, PDO::PARAM_STR);
         $query->bindValue(':contenu', $contenu, PDO::PARAM_STR);
         $query->bindValue(':userid', 1, PDO::PARAM_INT);
-        $query->bindValue(':image', $nom, PDO::PARAM_STR);
 
         // On exécute la requête
         $query->execute();
@@ -112,26 +112,26 @@ if (isset($_POST) && !empty($_POST)) {
         $idArticle = $db->lastInsertId();
 
         // On récupère dans le $_POST les catégories cochées
-        $categories = $_POST['categories'];
+        $localisations = $_POST['localisations'];
 
-        // On ajoute les catégories
-        foreach ($categories as $categorie) {
+        // On ajoute la localisation
+        foreach ($localisations as $localisation) {
             // On écrit la requête
-            $sql = 'INSERT INTO `articles_categories`(`articles_id`, `categories_id`) VALUES (:idArticle, :idCategorie);';
+            $sql = 'INSERT INTO `articles_localisation`(`articles_id`, `localisation_id`) VALUES (:idArticle, :idLocalisation);';
 
             // On prépare la requête
             $query = $db->prepare($sql);
 
             // On injecte les valeurs
             $query->bindValue(':idArticle', $idArticle, PDO::PARAM_INT);
-            $query->bindValue(':idCategorie', strip_tags($categorie), PDO::PARAM_INT);
+            $query->bindValue(':idLocalisation', strip_tags($localisation), PDO::PARAM_INT);
 
             // On exécute la requête
             $query->execute();
         }
 
         $_SESSION['message'] = 'Article ajouté avec succès sous le numéro ' . $idArticle;
-        // On redirige vers une autre page (liste des catégories par exemple)
+        // On redirige 
         header('Location: admin_articles.php');
     } else {
         echo "Le formulaire doit être rempli complètement";
@@ -178,11 +178,11 @@ require_once('inc/close.php');
             <label for="image">Image : </label>
             <input type="file" name="image" id="image">
         </div>
-        <h2>Catégories</h2>
-        <?php foreach ($categories as $categorie) : ?>
+        <h2>Localisations</h2>
+        <?php foreach ($localisations as $localisation) : ?>
             <div>
-                <input type="checkbox" name="categories[]" id="cat_<?= $categorie['id'] ?>" value="<?= $categorie['id'] ?>">
-                <label for="cat_<?= $categorie['id'] ?>"> <?= $categorie['name'] ?> </label>
+                <input type="checkbox" name="localisations[]" id="loc_<?= $localisation['id'] ?>" value="<?= $localisation['id'] ?>">
+                <label for="loc_<?= $localisation['id'] ?>"> <?= $localisation['name'] ?> </label>
             </div>
         <?php endforeach; ?>
         <button>Ajouter l'article</button>
