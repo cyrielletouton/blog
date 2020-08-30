@@ -9,12 +9,12 @@
 if (isset($_SESSION['user']) && !empty($_SESSION['user'])){
     // Ici, l'utilisateur est connecté
     ?>
-    <p>Bonjour <?= $_SESSION['user']['name']?> <a href="deconnexion.php">Déconnexion</a></p>
+    <p class="text-right">Bonjour <?= $_SESSION['user']['name']?> ! | <a href="deconnexion.php">Déconnexion</a></p>
     <?php
 } else {
     // Ici l'utilisateur n'est pas connecté
     ?>
-    <p><a href="connexion.php">Connexion</a> <a href="inscription.php">Inscription</a></p>
+    <p class="text-right"><a href="connexion.php">Connexion</a> | <a href="inscription.php">Inscription</a></p>
 
 <?php
 }
