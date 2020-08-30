@@ -65,14 +65,14 @@ if (isset($_POST) && !empty($_POST)) {
 
                     // On stocke le token dans la base
                     // On écrit la requête SQL
-                    $sql = "UPDATE `users` SET `remember_token` = '$token' WHERE `id`= ". $user['id'] ;
+                    $sql = "UPDATE `users` SET `remember_token` = '$token' WHERE `id`= " . $user['id'];
                     // Cette concaténation remplace les bindValue
 
                     // Donc sans les bind, pas besoin de prepare et execute, juste query
-                    $query = $db ->query($sql) ;
+                    $query = $db->query($sql);
 
                     header('Location: index.php');
-                } 
+                }
                 header('Location: index.php');
             } else {
                 echo 'Email et/ou mot de passe invalide';
@@ -90,12 +90,34 @@ if (isset($_POST) && !empty($_POST)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/journal/bootstrap.min.css" rel="stylesheet" integrity="sha384-vjBZc/DqIqR687k5rf6bUQ6IVSOxQUi9TcwtvULstA7+YGi//g3oT2qkh8W1Drx9" crossorigin="anonymous">
     <title>Connexion</title>
 </head>
 
 <body>
 
-    <h1>Connexion</h1>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="index.php">CyTravel</i></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="admin_articles.php">Admin articles <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="admin_users.php">Admin users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="admin_localisation.php">Admin localisation</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <h1 class="text-center">Connexion</h1>
 
     <?php
     if (isset($_SESSION['message']) && !empty($_SESSION['message'])) {
@@ -104,7 +126,7 @@ if (isset($_POST) && !empty($_POST)) {
     }
     ?>
 
-    <form method="post">
+    <form method="post" class="text-center">
         <div>
             <label for="mail">Email : </label>
             <input type="email" id="mail" name="mail">
@@ -117,9 +139,21 @@ if (isset($_POST) && !empty($_POST)) {
             <input type="checkbox" name="remember" id="remember">
             <label for="remember"> Rester connecté(e) </label>
         </div>
-        <button>Me connecter</button>
+        <button class="btn btn-primary">Me connecter</button>
         <a href="oubli_pass.php">Mot de passe oublié? </a>
     </form>
+
+    <br><hr>
+    <div class="text-center">
+        <p>** TIPS **</p>
+        <p>Pour te connecter en tant qu'administrateur :</p>
+        <p>Email : contact@demo.fr</p>
+        <p>Mot de passe : demo</p>
+    </div>
+
+    <footer style="background-color:#EB6864">
+        <p style="color:white" class="text-center"> Copyright © 2020 - Cyrielle.T - Juste un test en PHP ;)</p>
+    </footer>
 
 </body>
 

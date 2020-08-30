@@ -83,7 +83,7 @@ if (isset($_POST['mail']) && !empty($_POST['mail'])) {
             $mail->addAddress($user['email'], $user['name']);
 
             // On définit le sujet du mail
-            $mail->Subject = 'Rénitialisation du mot de passe pour le compte' .$user['email'];
+            $mail->Subject = 'Rénitialisation du mot de passe pour le compte' . $user['email'];
 
             // On définit que le message sera envoyé en HTML
             $mail->isHTML();
@@ -91,8 +91,8 @@ if (isset($_POST['mail']) && !empty($_POST['mail'])) {
             // On définit le corps du message
             $mail->Body = '
                     <h1>Rénitialiser votre mot de passe</h1>
-                    <p>Une réniatialisation de mot de passe a été demandée pour votre compte ' .$user['email'].'. Si vous avez effectué cette demande, veuillez cliquer sur le lien ci-dessous : </p>
-                    <a href="http://localhost/blog-ct/reset_pass.php?token='. $token .'"> http://localhost/blog-ct/reset_pass.php?token='. $token.' </a>
+                    <p>Une réniatialisation de mot de passe a été demandée pour votre compte ' . $user['email'] . '. Si vous avez effectué cette demande, veuillez cliquer sur le lien ci-dessous : </p>
+                    <a href="http://localhost/blog-ct/reset_pass.php?token=' . $token . '"> http://localhost/blog-ct/reset_pass.php?token=' . $token . ' </a>
                     ';
 
             // On peut définir un contenu de texte
@@ -121,20 +121,46 @@ if (isset($_POST['mail']) && !empty($_POST['mail'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/journal/bootstrap.min.css" rel="stylesheet" integrity="sha384-vjBZc/DqIqR687k5rf6bUQ6IVSOxQUi9TcwtvULstA7+YGi//g3oT2qkh8W1Drx9" crossorigin="anonymous">
     <title>Mot de passe oublié</title>
 </head>
 
 <body>
 
-    <h1>Mot de passe oublié</h1>
-    <p>Veuillez entrer votre adresse e-mail ci-dessous</p>
-    <form method="post">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="index.php">CyTravel</i></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="admin_articles.php">Admin articles <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="admin_users.php">Admin users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="admin_localisation.php">Admin localisation</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <h1 class="text-center">Mot de passe oublié</h1>
+    <p class="text-center">Veuillez entrer votre adresse e-mail ci-dessous</p>
+    <form method="post" class="text-center">
         <div>
             <label for="mail">E-mail : </label>
             <input type="email" id="mail" name="mail">
         </div>
-        <button>Valider</button>
+        <button class="btn btn-primary">Valider</button>
     </form>
+    <br>
+    <footer style="background-color:#EB6864">
+        <p style="color:white" class="text-center"> Copyright © 2020 - Cyrielle.T - Juste un test en PHP ;)</p>
+    </footer>
 
 </body>
 
