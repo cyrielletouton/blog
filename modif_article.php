@@ -1,15 +1,11 @@
 <?php
 // Aller chercher la liste de toutes les localisations par ordre alphabétique
-// Nécessaire AVANT de pouvoir afficher le formulaire
 // On se connecte à la base
 require_once('inc/connect.php');
-
 // On écrit la requête SQL
 $sql = 'SELECT * FROM `localisation` ORDER BY `name` ASC;';
-
 // Pas de variables, donc utilisation de la méthode query
 $query = $db->query($sql);
-
 // on récupère les données
 $localisations = $query->fetchAll(PDO::FETCH_ASSOC);
 
@@ -19,19 +15,14 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     // Un id est donné
     // On récupère l'id et on le nettoie
     $id = strip_tags($_GET['id']);
-
     // On écrit la requête
     $sql = 'SELECT * FROM `articles` WHERE `id`=:id;';
-
     // On prépare la requête
     $query = $db->prepare($sql);
-
     // On injecte les valeurs
     $query->bindValue(':id', $id, PDO::PARAM_INT);
-
     // on exécute
     $query->execute();
-
     // On récupère les données de l'article
     $article = $query->fetch(PDO::FETCH_ASSOC);
 
@@ -44,16 +35,12 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     // L'article existe, on va chercher la localisation dans laquelle il se trouve
     // On écrit la requête
     $sql = 'SELECT * FROM `articles_localisation` WHERE `articles_id`= :id;';
-
     // On prépare la requête
     $query = $db->prepare($sql);
-
     // On injecte les valeurs
     $query->bindValue(':id', $id, PDO::PARAM_INT);
-
     // on exécute
     $query->execute();
-
     $localisationsArticle = $query->fetchAll(PDO::FETCH_ASSOC);
 } else {
     // Pas d'id
@@ -74,10 +61,8 @@ if (isset($_POST) && !empty($_POST)) {
         // On récupère les valeurs et on nettoie
         $titre = strip_tags($_POST['titre']);
         $contenu = strip_tags($_POST['contenu'], '<div><p><h1><h2><img><strong>');
-
         // On récupère le nom de l'image dans la base de données
         $nom = $article['featured_image'];
-
         // On vérifie si on a une image
         if (isset($_FILES) && !empty($_FILES)) {
             // On vérifie que tous les fichiers attendus sont envoyés
@@ -164,61 +149,40 @@ if (isset($_POST) && !empty($_POST)) {
         // On récupère l'id et on nettoie
         $id = strip_tags($_GET['id']);
 
-
-
-
-        // On est déjà connectés
         // On écrit la requête SQL
         $sql = 'UPDATE `articles` SET `title`= :titre, `content`= :contenu, `featured_image`= :image WHERE `id` = :id ;';
-
         // On prépare la requête
         $query = $db->prepare($sql);
-
         // On injecte les valeurs dans la requête
         $query->bindValue(':titre', $titre, PDO::PARAM_STR);
         $query->bindValue(':contenu', $contenu, PDO::PARAM_STR);
         $query->bindValue(':image', $nom, PDO::PARAM_STR);
         $query->bindValue(':id', $id, PDO::PARAM_INT);
-
         // On exécute la requête
         $query->execute();
-
         // Fin mise à jour article
-
-
-
 
         // On efface toutes les lignes correspondantes à l'article dans la table articles_categories
         // on écrit la requête
         $sql = 'DELETE FROM `articles_localisation` WHERE `articles_id` = :id;';
-
         // On prépare la requête
         $query = $db->prepare($sql);
-
         // On injecte les valeurs dans la requête
         $query->bindValue(':id', $id, PDO::PARAM_INT);
-
         // On exécute la requête
         $query->execute();
 
-
-
-
         // On récupère dans le $_POST les localisations cochées
         $localisations = $_POST['localisations'];
-
         // On ajoute les localisations
         foreach ($localisations as $localisation) {
             // On écrit la requête
             $sql = 'INSERT INTO `articles_localisation`(`articles_id`, `localisation_id`) VALUES (:idArticle, :idLocalisation);';
-
             // On prépare la requête
             $query = $db->prepare($sql);
-
             // On injecte les valeurs
             $query->bindValue(':idArticle', $id, PDO::PARAM_INT);
             $query->bindValue(':idLocalisation', strip_tags($localisation), PDO::PARAM_INT);
-
             // On exécute la requête
             $query->execute();
         }
@@ -244,8 +208,30 @@ if (isset($_POST) && !empty($_POST)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/journal/bootstrap.min.css" rel="stylesheet" integrity="sha384-vjBZc/DqIqR687k5rf6bUQ6IVSOxQUi9TcwtvULstA7+YGi//g3oT2qkh8W1Drx9" crossorigin="anonymous">
     <title>Modifier un article</title>
 </head>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand" href="index.php">CyTravel</i></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="admin_articles.php">Admin articles <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="admin_users.php">Admin users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="admin_localisation.php">Admin localisation</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 
 <body>
     <h1>Modifier un article</h1>
@@ -274,14 +260,18 @@ if (isset($_POST) && !empty($_POST)) {
                     $checked = 'checked';
                 }
             }
-        ?>
-            <div>
-                <input type="checkbox" name="localisations[]" id="loc_<?= $localisation['id'] ?>" value="<?= $localisation['id'] ?>" <?= $checked ?>>
-                <label for="loc_<?= $localisation['id'] ?>"> <?= $localisation['name'] ?> </label>
-            </div>
+            ?>
+        <div>
+            <input type="checkbox" name="localisations[]" id="loc_<?= $localisation['id'] ?>" value="<?= $localisation['id'] ?>" <?= $checked ?>>
+            <label for="loc_<?= $localisation['id'] ?>"> <?= $localisation['name'] ?> </label>
+        </div>
         <?php endforeach; ?>
-        <button>Modifier l'article</button>
+        <button class="btn btn-primary">Modifier l'article</button>
     </form>
+    <br>
+    <footer style="background-color:#EB6864">
+        <p style="color:white" class="text-center"> Copyright © 2020 - Cyrielle.T - Juste un test en PHP ;)</p>
+    </footer>
 
 </body>
 
